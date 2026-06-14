@@ -2,22 +2,17 @@ pipeline {
     agent any
 
     stages {
-
         stage('Build') {
             steps {
                 echo 'Building...'
             }
         }
 
-        stage('Deploy to EC2') {
+        stage('Deploy to NFS') {
             steps {
-                sshagent(['ec2-ssh']){
+                sshagent(['ec2-ssh']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@54.147.138.11 '
-                        echo "DEPLOY OK"
-                        hostname
-                        uptime
-                    '
+                    scp -o StrictHostKeyChecking=no -r * ubuntu@54.242.181.160:/mnt/apps
                     """
                 }
             }
