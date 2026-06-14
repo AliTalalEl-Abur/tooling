@@ -2,29 +2,26 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+
+        stage('Clone repo') {
             steps {
-                git branch: 'main', url: 'https://github.com/AliTalalEl-Abur/tooling.git'
+                git 'https://github.com/AliTalalEl-Abur/tooling.git'
             }
         }
 
-        stage('Build') {
+        stage('Deploy to EC2') {
             steps {
-                sh 'echo "Building project..."'
-                sh 'ls -la'
+                sshagent(['ec2-ssh']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@54.147.138.11 << 'EOF'
+                        echo "🚀 Deploy desde Jenkins OK"
+                        hostname
+                        uptime
+                        ls -la
+EOF
+                    '''
+                }
             }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'echo "Running tests..."'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished'
         }
     }
 }
