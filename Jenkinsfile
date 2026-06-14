@@ -3,9 +3,10 @@ pipeline {
 
     stages {
 
-        stage('Clone repo') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/AliTalalEl-Abur/tooling.git'
+                git branch: 'main',
+                    url: 'https://github.com/AliTalalEl-Abur/tooling.git'
             }
         }
 
@@ -13,12 +14,12 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh']) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@54.147.138.11 << 'EOF'
-                        echo "🚀 Deploy desde Jenkins OK"
-                        hostname
-                        uptime
+                    ssh -o StrictHostKeyChecking=no ubuntu@54.147.138.11 "
+                        echo 'Deploy OK';
+                        hostname;
+                        uptime;
                         ls -la
-EOF
+                    "
                     '''
                 }
             }
