@@ -11,9 +11,9 @@ pipeline {
         stage('Deploy to NFS') {
             steps {
                 sshagent(['ec2-ssh']) {
-                    sh """
-                    scp -o StrictHostKeyChecking=no -r * ubuntu@54.242.181.160:/mnt/apps
-                    """
+                    sh '''
+                    scp -o StrictHostKeyChecking=no README.md ubuntu@54.242.181.160:/mnt/apps/
+                    '''
                 }
             }
         }
